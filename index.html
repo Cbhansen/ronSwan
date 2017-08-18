@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ron Swanson Quotes</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- css -->
+    <link rel="stylesheet" href="https://bootswatch.com/superhero/bootstrap.min.css">
+    <style>
+        .jumbotron {
+            background: wheat;
+            margin: 50px auto;
+        }
+        .jumbotron h1 {
+            text-align: center;
+            color: orangered;
+            font-weight:400
+        }
+        #main {
+            min-height: auto;
+            background: beige;
+            padding: 10px;
+        }
+        #main p {
+            color: orangered;
+        }
+        .container {
+            width: 70%;
+        }
+        button {
+            box-shadow: 0 3px 10px 1px #333;
+            transition: .2s ease-in-out;
+        }
+        button:hover {
+            box-shadow: 0px 3px 5px 0px #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="my-app">
+    <header>
+        <div class="jumbotron">
+                <h1>{{ title }}</h1>
+                <button v-on:click="loadQuote" class="btn btn-warning btn-block">Wisdom</button>
+        </div>
+    </header>
+    <section id="main">
+        <div class="panel panel-default">
+            <div class="panel-heading">By: Ron Swanson</div>
+            <div class="panel-body">
+                {{ awesomeQuote }}
+            </div>
+        </div>
+    </section>
+</div>
+    
+<script>
+    var app = new Vue({
+        el: "#my-app",
+        data: {
+            title: "Ron Swanson Quotes",
+            awesomeQuote: ''
+        }, 
+        created: function() {
+            this.loadQuote();
+        },
+        methods: {
+            loadQuote: function() {
+                this.awesomeQuote = "Loading..";
+                var app = this;
+                axios.get('http://ron-swanson-quotes.herokuapp.com/v2/quotes')
+                .then(function(res) {
+                    app.awesomeQuote = res.data[0];
+                })
+                .catch(function(err) {
+                    app.awesomeQuote = "An error occured: " + err
+                })
+            }
+        }
+    });
+</script>
+</body>
+</html>
